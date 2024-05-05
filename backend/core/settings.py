@@ -103,6 +103,8 @@ DATABASES = {
     }
 }
 
+
+# Custom user model
 AUTH_USER_MODEL = "user_auth.User"
 
 # Password validation
@@ -148,17 +150,37 @@ STATIC_ROOT = path.join(BASE_DIR, "staticfiles")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Django REST Framework
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+        "rest_framework.permissions.AllowAny",
     ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
 }
 
+# # AWS SES
+# EMAIL_BACKEND = "django_ses.SESBackend"
+
+# AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID")
+
+# AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY")
+
+# AWS_SES_REGION_NAME = getenv("AWS_SES_REGION_NAME")
+
+# AWS_SES_REGION_ENDPOINT = f"email.{AWS_SES_REGION_NAME}.amazonaws.com"
+
+# USE_SES_V2 = True
+
+# AWS_SES_FROM_EMAIL = getenv("AWS_FROM_EMAIL")
+
+
+# Djoser
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "/password-reset/{uid}/{token}",
-    "SEND_ACTIVATION_EMAIL": True,
-    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    # "SEND_ACTIVATION_EMAIL": True,
+    # "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "ACTIVATION_URL": "/activate/{uid}/{token}",
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
     "TOKEN_MODEL": None,

@@ -10,6 +10,8 @@ django-cors-headers = "*"
 python-dotenv = "*"
 django-jazzmin = "*"
 dj-database-url = "*"
+django-ses = "*"
+django-anymail = {extras = ["mailgun"], version = "*"}
 
 [dev-packages]
 
