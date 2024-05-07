@@ -1,0 +1,10 @@
+*.sqlite3
+*.db
+
+__pycache__/
+*.pyc
+
+.env
+
+**/migrations/*.py
+**/migrations/*.pyc

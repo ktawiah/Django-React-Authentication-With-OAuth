@@ -104,7 +104,6 @@ DATABASES = {
     }
 }
 
-
 # Custom user model
 AUTH_USER_MODEL = "user_auth.User"
 
@@ -181,18 +180,30 @@ REST_FRAMEWORK = {
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "/password-reset/{uid}/{token}",
     # "SEND_ACTIVATION_EMAIL": True,
-    # "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "USER_CREATE_PASSWORD_RETYPE": True,
     "ACTIVATION_URL": "/activate/{uid}/{token}",
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
 }
 
-# Domain -> Updated these when going into production
+# Domain -> Update these when going into production
 DOMAIN = "localhost:3000"
 
+SITE_NAME = "DRF AUTH"
+
 # Cors headers
-CORS_ALLOW_ORIGINS = getenv(
-    "CORS_ALLOW_ORIGINS", "http://localhost:3000,http://127.0.0.1".split(",")
+CORS_ALLOWED_ORIGINS = getenv(
+    "CORS_ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1".split(",")
 )
 
 CORS_ALLOW_CREDENTIALS = True
+
+# Auth Cookies
+AUTH_COOKIE_ACCESS = "access"
+AUTH_COOKIE_ACCESS_MAX_AGE = 60 * 5
+AUTH_COOKIE_REFRESH_MAX_AGE = 60 * 60 * 24
+AUTH_COOKIE_SECURE = getenv("AUTH_COOKIE_SECURE", "True") == "True"
+AUTH_COOKIE_HTTPONLY = True
+AUTH_COOKIE_PATH = "/"
+AUTH_COOKIE_SAMESITE = "None"
