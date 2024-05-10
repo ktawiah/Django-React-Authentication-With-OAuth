@@ -1,13 +1,17 @@
 "use client";
 
+import Spinner from "@/components/global/spinner";
+import OAuthButtons from "@/components/layout/oauth";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLoginUserMutation } from "@/lib/api-endpoints";
-import { setAuth } from "@/lib/features/auth-slice";
+import { finishInitialLoad, setAuth } from "@/lib/features/auth-slice";
 import { useAppDispatch } from "@/lib/hooks";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { toast } from "react-toastify";
-import Swal from "sweetalert2";
+import { FcGoogle } from "react-icons/fc";
+import { toast } from "sonner";
 
 export default function Page() {
   const router = useRouter();
@@ -27,38 +31,21 @@ export default function Page() {
       .unwrap()
       .then(() => {
         dispatch(setAuth());
-        Swal.fire({
-          title: "Account Registration Successful",
-          icon: "success",
-          toast: true,
-          timer: 6000,
-          position: "top-right",
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
+        toast.success("Account Login Successful");
+        dispatch(finishInitialLoad());
         router.push("/");
       })
       .catch((error) => {
-        Swal.fire({
-          title: "Account Registration Unsuccessful",
-          icon: "error",
-          toast: true,
-          timer: 6000,
-          position: "top-right",
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
+        toast.error(
+          "Unexpected error. Please check login credentials and try again."
+        );
+        dispatch(finishInitialLoad());
       });
   };
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Your Company"
-          />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
@@ -100,12 +87,12 @@ export default function Page() {
                   Password
                 </label>
                 <div className="text-sm">
-                  <a
+                  <Link
                     href="#"
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="mt-2">
@@ -122,25 +109,26 @@ export default function Page() {
             </div>
 
             <div>
-              <button
+              <Button
                 type="submit"
                 disabled={isLoading}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
-              </button>
+                {isLoading ? <Spinner /> : <p>Sign in</p>}
+              </Button>
             </div>
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Don&apos;t have an account?{" "}
-            <a
+            <Link
               href="/register"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
               Start a 14 day free trial
-            </a>
+            </Link>
           </p>
+          <OAuthButtons />
         </div>
       </div>
     </>

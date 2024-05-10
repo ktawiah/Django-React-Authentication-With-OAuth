@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import StoreProvider from "@/providers/redux";
-import ToastContainerWrapper from "@/providers/toast";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +20,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <StoreProvider>{children}</StoreProvider>
-        <ToastContainerWrapper />
+        <Toaster
+          richColors={true}
+          duration={2000}
+          closeButton
+          pauseWhenPageIsHidden
+        />
       </body>
     </html>
   );

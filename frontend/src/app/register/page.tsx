@@ -2,11 +2,14 @@
 import { useRegisterUserMutation } from "@/lib/api-endpoints";
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useState } from "react";
-import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/components/global/spinner";
+import { toast } from "sonner";
+import OAuthButtons from "@/components/layout/oauth";
+import { useAppDispatch } from "@/lib/hooks";
+import { finishInitialLoad } from "@/lib/features/auth-slice";
 
 export default function Example() {
   const [register, { isLoading }] = useRegisterUserMutation();
@@ -18,6 +21,7 @@ export default function Example() {
     password: "",
     re_password: "",
   });
+  const dispatch = useAppDispatch();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -35,38 +39,19 @@ export default function Example() {
     })
       .unwrap()
       .then(() => {
-        Swal.fire({
-          title: "Account Registration Successful",
-          icon: "success",
-          toast: true,
-          timer: 6000,
-          position: "top-right",
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
+        toast.success("Account Registration Successful");
+        dispatch(finishInitialLoad());
         router.push("/login");
       })
       .catch(() => {
-        Swal.fire({
-          title: "Account Registration unsuccessfully",
-          icon: "error",
-          toast: true,
-          timer: 6000,
-          position: "top-right",
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
+        toast.error("Account Registration Unsuccessful");
+        dispatch(finishInitialLoad());
       });
   };
   return (
     <>
       <div className="flex h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          {/* <img
-            className="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-            alt="Full Authentication"
-          /> */}
           <h2 className="mt-3 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Create an account
           </h2>
@@ -204,6 +189,7 @@ export default function Example() {
               Sign In
             </Link>
           </p>
+          <OAuthButtons />
         </div>
       </div>
     </>
