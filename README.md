@@ -79,12 +79,12 @@ REDIRECT_URLS=
 NEXT_PUBLIC_HOST=
 ```
 
-#### 9. Run frontend dev server
+#### 12. Run frontend dev server
 ```bash
   npm run dev
 ```
 
-#### 10. Open [http://localhost:3000](http://localhost:3000) with your browser to see frontend result and [http://localhost:8000](http://localhost:8000) to view backend results.
+#### 13. Open [http://localhost:3000](http://localhost:3000) with your browser to see frontend result and [http://localhost:8000](http://localhost:8000) to view backend results.
 
 
 ## Contributing
